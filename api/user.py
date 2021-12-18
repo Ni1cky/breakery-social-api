@@ -20,13 +20,13 @@ def delete_the_user(user_id: int):
     delete_user(user_id)
 
 
-@app.post("/users/{id}/edit")
-def change_users_name(req_user):
+@app.post("/users/{user_id}/edit")
+def change_users_name(user_id: int, req_user):
     user = User(**req_user.dict)
     update_user(user)
 
 
-@app.get("/users/{id}")
+@app.get("/users/{user_id}")
 def get_user(user_id: int):
     user = get_user_by_id(user_id)
     return user
