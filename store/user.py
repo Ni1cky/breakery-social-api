@@ -22,3 +22,9 @@ def get_user_by_login(login: str) -> User:
         session: Session
         user = session.query(User).filter_by(login=login).first()
         return user
+
+
+def delete_user(user: User):
+    with session_factory() as session:
+        session: Session
+        session.delete(user)

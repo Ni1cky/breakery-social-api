@@ -16,3 +16,10 @@ def get_message_by_id(message_id: int) -> Message:
         session: Session
         message = session.query(Message).filter_by(id=message_id).first()
         return message
+
+
+def delete_message(message: Message):
+    with session_factory() as session:
+        session: Session
+        session.delete(message)
+        session.commit()
