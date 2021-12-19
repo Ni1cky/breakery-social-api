@@ -30,3 +30,10 @@ def update_message(message: Message):
         session: Session
         session.add(message)
         session.commit()
+
+
+def messages_from_to(from_id: int, to_id: int):
+    with session_factory() as session:
+        session: Session
+        messages = session.query(Message).filter_by(sender_id=from_id, receiver_id=to_id).all()
+        return messages
