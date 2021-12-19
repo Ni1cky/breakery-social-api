@@ -1,33 +1,29 @@
-from api import app
-from store.message import get_message_by_id, add_message, delete_message, change_messages_text_by_id
+from fastapi import APIRouter
+from store.message import get_message_by_id, add_message, delete_message, update_message
 from store.models.models import Message
 
 
-@app.get("/get_message")
-def get_message(message_id: int = -1):
-    if message_id != -1:
-        message = get_message_by_id(message_id)
-        return message
-    print("Дурак?")
+message_router = APIRouter()
 
 
-@app.post("/add_message/{message}")
-def add_new_message(message: Message):
+@message_router.get("/messages/{message_id}")
+def get_message(message_id: int):
+    message = get_message_by_id(message_id)
+    return message
+
+
+@message_router.post("/messages")
+def add_new_message(req_message):
+    message = Message(**req_message.dict())
     add_message(message)
 
 
-@app.delete("/delete_message/{message}")
-def delete_the_message(message: Message):
-    delete_message(message)
+@message_router.delete("/messages/{message_id}")
+def delete_the_message(message_id: int):
+    delete_message(message_id)
 
 
-@app.post("/change_text")
-def change_messages_text(message_id: int = -1, new_text: str = ""):
-    if not new_text:
-        print("Дурак?")
-        return
-
-    if message_id != -1:
-        change_messages_text_by_id(message_id, new_text)
-        return
-    print("Дурак?")
+@message_router.put("/messages/{message_id}/edit")
+def change_messages_fields(message_id: int, req_message):
+    message = Message(**req_message.dict())
+    update_message(message)
