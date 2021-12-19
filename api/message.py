@@ -29,7 +29,7 @@ def change_messages_fields(message_id: int, req_message):
     update_message(message)
 
 
-@message_router.get("/messages/{from_id}/{to_id}")
-def get_messages_by_ids_in_dialogue(from_id: int, to_id: int):
-    message = messages_from_to(from_id, to_id)
-    return message
+@message_router.get("/messages/{user1_id}/{user2_id}")
+def get_messages_by_ids_in_dialogue(user1_id: int, user2_id: int):
+    messages = messages_from_to(user1_id, user2_id)
+    return messages
