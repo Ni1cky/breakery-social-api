@@ -25,6 +25,8 @@ class MessageBase(BaseModel):
     is_read: bool
     is_important: bool
     is_edited: bool
+    sender_id: int
+    receiver_id: int
 
 
 class Message(MessageBase):
