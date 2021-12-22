@@ -33,3 +33,17 @@ class Message(MessageBase):
 
 class MessageCreate(MessageBase):
     pass
+
+
+class PostBase(BaseModel):
+    text: str
+    time_created: datetime.datetime
+    author_id: int
+
+
+class Post(PostBase):
+    id: int
+
+
+class PostCreate(PostBase):
+    pass
