@@ -1,5 +1,20 @@
 import datetime
+from typing import List
 from pydantic import BaseModel
+
+
+class PostBase(BaseModel):
+    text: str
+    time_created: datetime.datetime
+    author_id: int
+
+
+class Post(PostBase):
+    id: int
+
+
+class PostCreate(PostBase):
+    pass
 
 
 class UserBase(BaseModel):
@@ -9,6 +24,7 @@ class UserBase(BaseModel):
     surname: str
     photo: str
     additional_data: str
+    posts: List[Post]
 
 
 class User(UserBase):
@@ -34,18 +50,4 @@ class Message(MessageBase):
 
 
 class MessageCreate(MessageBase):
-    pass
-
-
-class PostBase(BaseModel):
-    text: str
-    time_created: datetime.datetime
-    author_id: int
-
-
-class Post(PostBase):
-    id: int
-
-
-class PostCreate(PostBase):
     pass
