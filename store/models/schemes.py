@@ -19,7 +19,7 @@ class PostCreate(PostBase):
 
 class UserBase(BaseModel):
     login: str
-    hash_pass: str
+    password: str
     name: str
     surname: str
     photo: str
@@ -34,6 +34,11 @@ class User(UserBase):
 class UserCreate(UserBase):
     pass
 
+class UserGet(UserBase):
+    id: int
+
+    class Config:
+        orm_mode = True
 
 class MessageBase(BaseModel):
     text: str
