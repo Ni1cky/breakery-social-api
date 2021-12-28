@@ -3,12 +3,11 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from fastapi import Depends
 from jose import jwt
-from starlette.responses import JSONResponse
 
-from store import user as user_store
+from starlette.responses import JSONResponse
 import authorization
 from store.models.models import User
-from store import user as user_db
+from store.models.schemes import UserCreate, UserGet
 from store.user import get_user_by_id, add_user, delete_user, get_users, update_user, session_factory
 from store import user as user_store
 
@@ -50,7 +49,7 @@ def get_me(current_user: User = Depends(current_user)):
 
 @app.post('/auth/register')
 def register(user: UserCreate, session: Session = Depends(get_db)):
-    return auth.register(session, User(**user.dict()))
+    return authorization.register(session, User(**user.dict()))
 
 
 

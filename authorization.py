@@ -1,11 +1,11 @@
 import datetime
 
 from passlib.context import CryptContext
-
+from sqlalchemy.orm import Session
+from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 
-
-from store.models.models import User
+from models import User
 from store import user as user_db
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
@@ -15,31 +15,33 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 pwd_context = CryptContext(schemes=['bcrypt'])
 
 
-def verify_pass(password, hash_password):
-    return pwd_context.verify(password, hash_password)
+def hash_password(password):
+    return pwd_context.hash(password)
 
 
-def create_token(user: User):
+def verify_password(password, password_hash):
+    return pwd_context.verify(password, password_hash)
+
+
+def generate_token(user: User):
     data = {
-        'exp': datetime.datetime.now() + datetime.timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
-        'sub': str(user.id)
+        "exp": datetime.datetime.now() + datetime.timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
+        'sub': user.username
     }
-
     token = jwt.encode(data, SECRET_KEY, ALGORITHM)
     return token
 
 
-def auth(session, login, password):
-    user = user_db.get_user_by_name(session, login)
+def auth(session: Session, login, password):
+    user = user_db.get_user_by_username(session, login)
     if user is None:
-        raise ValueError('такого пользователя не сущетсвует')
-    res = verify_pass(password, user.password)
+        raise ValueError("Логин или пароль неверен")
+    res = verify_password(password, user.password)
     if not res:
-        raise ValueError('Логин или пароль неверны')
-    else:
-        return create_token(user)
+        raise ValueError("Логин или пароль неверен")
+    return generate_token(user)
 
 
-def register(session, user: User):
-    user.password = pwd_context.hash(user.password)
-    user_db.add_new_user(session, user)
+def register(session: Session, user: User):
+    user.password = hash_password(user.password)
+    return user_db.add_user(session, user)

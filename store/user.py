@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 from store import session_factory
 from store.models.models import User
+from sqlalchemy.exc import NoResultFound
+
 
 
 def add_user(session, user: User):
@@ -13,6 +15,13 @@ def get_user_by_id(user_id: int) -> User:
         session: Session
         user = session.query(User).filter_by(id=user_id).first()
         return user
+
+def get_user_by_username(session, username: str) -> User:
+    try:
+        user = session.query(User).filter_by(login=username).first()
+        return user
+    except NoResultFound:
+        return None
 
 
 def delete_user(user_id):
