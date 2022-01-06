@@ -19,16 +19,16 @@ class PostCreate(PostBase):
 
 class UserBase(BaseModel):
     login: str
-    password: str
+    hash_pass: str
     name: str
     surname: str
     photo: str
     additional_data: str
-    posts: List[Post]
 
 
 class User(UserBase):
     id: int
+    posts: List[Post]
 
 
 class UserCreate(UserBase):

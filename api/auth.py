@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from fastapi import Depends
-from jose import jwt
+from jose import jwt, JWTError
 
 from starlette.responses import JSONResponse
 import authorization
@@ -32,7 +32,7 @@ def current_user(token: str = Depends(auth_scheme), session: Session = Depends(g
         raise JWTError("user is not found in db")
     return user
 
-@app.post('/token')
+@auth_router.post('/token')
 def token(form: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(get_db)):
     try:
         token = authorization.auth(session, form.username, form.password)
@@ -42,12 +42,12 @@ def token(form: OAuth2PasswordRequestForm = Depends(), session: Session = Depend
         return {"access_token": token, "token_type": "bearer"}
 
 
-@app.get('/users/me', response_model=UserGet)
+@auth_router.get('/users/me', response_model=UserGet)
 def get_me(current_user: User = Depends(current_user)):
     return current_user
 
 
-@app.post('/auth/register')
+@auth_router.post('/auth/register')
 def register(user: UserCreate, session: Session = Depends(get_db)):
     return authorization.register(session, User(**user.dict()))
 

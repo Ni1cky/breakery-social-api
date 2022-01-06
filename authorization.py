@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 
-from models import User
+from store.models.models import User
 from store import user as user_db
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
@@ -43,5 +43,5 @@ def auth(session: Session, login, password):
 
 
 def register(session: Session, user: User):
-    user.password = hash_password(user.password)
+    user.hash_pass = hash_password(user.hash_pass)
     return user_db.add_user(session, user)
