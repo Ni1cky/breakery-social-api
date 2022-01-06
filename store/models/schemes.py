@@ -19,7 +19,7 @@ class PostCreate(PostBase):
 
 class UserBase(BaseModel):
     login: str
-    hash_pass: str
+    password_hash: str
     name: str
     surname: str
     photo: str

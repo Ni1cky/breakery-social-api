@@ -43,8 +43,8 @@ def token(form: OAuth2PasswordRequestForm = Depends(), session: Session = Depend
 
 
 @auth_router.get('/users/me', response_model=UserGet)
-def get_me(current_user: User = Depends(current_user)):
-    return current_user
+def get_me(user: User = Depends(current_user)):
+    return user
 
 
 @auth_router.post('/auth/register')

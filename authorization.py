@@ -26,7 +26,7 @@ def verify_password(password, password_hash):
 def generate_token(user: User):
     data = {
         "exp": datetime.datetime.now() + datetime.timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
-        'sub': user.username
+        'sub': user.login
     }
     token = jwt.encode(data, SECRET_KEY, ALGORITHM)
     return token
@@ -36,12 +36,12 @@ def auth(session: Session, login, password):
     user = user_db.get_user_by_username(session, login)
     if user is None:
         raise ValueError("Логин или пароль неверен")
-    res = verify_password(password, user.password)
+    res = verify_password(password, user.password_hash)
     if not res:
         raise ValueError("Логин или пароль неверен")
     return generate_token(user)
 
 
 def register(session: Session, user: User):
-    user.hash_pass = hash_password(user.hash_pass)
+    user.password_hash = hash_password(user.password_hash)
     return user_db.add_user(session, user)
