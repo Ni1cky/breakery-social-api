@@ -47,6 +47,8 @@ def get_me(user: User = Depends(current_user)):
     return user
 
 
+
+
 @auth_router.post('/auth/register')
 def register(user: UserCreate, session: Session = Depends(get_db)):
     return authorization.register(session, User(**user.dict()))
