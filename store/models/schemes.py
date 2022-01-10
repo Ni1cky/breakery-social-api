@@ -19,21 +19,26 @@ class PostCreate(PostBase):
 
 class UserBase(BaseModel):
     login: str
-    hash_pass: str
+    password_hash: str
     name: str
     surname: str
     photo: str
     additional_data: str
-    posts: List[Post]
 
 
 class User(UserBase):
     id: int
+    posts: List[Post]
 
 
 class UserCreate(UserBase):
     pass
 
+class UserGet(UserBase):
+    id: int
+
+    class Config:
+        orm_mode = True
 
 class MessageBase(BaseModel):
     text: str
