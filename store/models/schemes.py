@@ -1,6 +1,7 @@
 import datetime
 from typing import List
 from pydantic import BaseModel
+from pydantic.typing import Optional
 
 
 class PostBase(BaseModel):
@@ -22,8 +23,8 @@ class UserBase(BaseModel):
     password_hash: str
     name: str
     surname: str
-    photo: str
-    additional_data: str
+    photo: Optional[str]
+    additional_data: Optional[str]
 
 
 class User(UserBase):
