@@ -29,7 +29,7 @@ def delete_user(user_id):
         session: Session
         user = session.query(User).filter_by(id=user_id).first()
         session.delete(user)
-
+        session.commit()
 
 def get_users():
     with session_factory() as session:

@@ -1,32 +1,26 @@
 from sqlalchemy.orm import Session
 from store import session_factory
-from store.models.models import Message
+from store.models.models import Post
 
 
-def add_message(message: Message):
-    with session_factory() as session:
-        session: Session
-        session.add(message)
-        session.commit()
+def add_post(post: Post, session: Session):
+    session.add(post)
+    session.commit()
+
+def get_posts(session: Session):
+    posts = session.query(Post).all()
+    return posts
+
+def get_post_by_id(post_id: int, session: Session) -> Post:
+    post = session.query(Post).filter_by(id=post_id).first()
+    return post
 
 
-def get_message_by_id(message_id: int) -> Message:
-    with session_factory() as session:
-        session: Session
-        message = session.query(Message).filter_by(id=message_id).first()
-        return message
+def delete_post(post_id: int, session: Session):
+    post = session.query(Post).filter_by(id=post_id).first()
+    session.delete(post)
+    session.commit()
 
-
-def delete_message(message_id: int):
-    with session_factory() as session:
-        session: Session
-        message = session.query(Message).filter_by(id=message_id).first()
-        session.delete(message)
-        session.commit()
-
-
-def update_message(message: Message):
-    with session_factory() as session:
-        session: Session
-        session.add(message)
-        session.commit()
+def update_post(post: Post, session: Session):
+    session.add(post)
+    session.commit()
