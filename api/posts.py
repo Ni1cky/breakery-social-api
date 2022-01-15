@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from store.posts import get_post_by_id, add_post, delete_post,
+from store.posts import get_post_by_id, add_post, delete_post, update_post
 from store.models.models import Post
 from sqlalchemy.orm import Session
 from store.posts import session_factory
