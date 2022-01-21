@@ -3,7 +3,6 @@ from store.models.models import User
 from store.models.schemes import UserBase
 from store.user import get_user_by_id, add_user, delete_user, get_users, update_user
 
-
 user_router = APIRouter()
 
 
