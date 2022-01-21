@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from store.models.models import User
+from store.models.schemes import UserBase
 from store.user import get_user_by_id, add_user, delete_user, get_users, update_user
-
 
 user_router = APIRouter()
 
@@ -24,9 +24,9 @@ def delete_the_user(user_id: int):
 
 
 @user_router.put("/users/{user_id}/edit")
-def change_users_fields(user_id: int, req_user):
+def change_users_fields(user_id: int, req_user: UserBase):
     user = User(**req_user.dict())
-    update_user(user)
+    update_user(user_id, user)
 
 
 @user_router.get("/users/{user_id}")

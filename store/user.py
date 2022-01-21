@@ -38,8 +38,11 @@ def get_users():
         return users
 
 
-def update_user(user: User):
+def update_user(user_id: int, upd_user: User):
     with session_factory() as session:
         session: Session
-        session.add(user)
+        user = session.query(User).filter_by(id=user_id).first()
+        user.name = upd_user.name
+        user.surname = upd_user.surname
+        user.photo = upd_user.photo
         session.commit()
