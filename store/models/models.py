@@ -28,7 +28,7 @@ class Message(Base):
     is_important = Column(Boolean)
     is_edited = Column(Boolean)
     sender_id = Column(Integer, ForeignKey("users.id"))
-    receiver_id = Column(Integer, ForeignKey("users.id"))
+    dialog_id = Column(Integer, ForeignKey("dialogs.id"))
 
 
 class Post(Base):
@@ -38,3 +38,21 @@ class Post(Base):
     text = Column(String)
     time_created = Column(DateTime)
     author_id = Column(Integer, ForeignKey("users.id"))
+
+
+class Dialog(Base):
+    __tablename__ = "dialogs"
+
+    id = Column(Integer, primary_key=True)
+    user1_id = Column(Integer, ForeignKey("users.id"))
+    user2_id = Column(Integer, ForeignKey("users.id"))
+    messages = relationship("Message", backref="dialog")
+
+
+class Subscription(Base):
+    __tablename__ = "subscriptions"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    subscriber_id = Column(Integer, ForeignKey("users.id"))
+    is_banned = Column(Boolean)
