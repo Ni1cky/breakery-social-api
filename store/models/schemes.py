@@ -57,3 +57,13 @@ class Message(MessageBase):
 
 class MessageCreate(MessageBase):
     pass
+
+class DialogBase(BaseModel):
+    user1_id: int
+    user2_id: int
+
+class Dialog(DialogBase):
+    id: int
+
+class DialogCreate(DialogBase):
+    pass
