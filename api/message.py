@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from store.message import get_message_by_id, add_message, delete_message, update_message, messages_from_to
+from store.message import get_message_by_id, add_message, delete_message, update_message, messages_for_dialog
 from store.models.models import Message
 
 
@@ -31,5 +31,5 @@ def change_messages_fields(message_id: int, req_message):
 
 @message_router.get("/messages/{user1_id}/{user2_id}")
 def get_messages_by_ids_in_dialogue(user1_id: int, user2_id: int):
-    messages = messages_from_to(user1_id, user2_id)
+    messages = messages_for_dialog(user1_id, user2_id)
     return messages
