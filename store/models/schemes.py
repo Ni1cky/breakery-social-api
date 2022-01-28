@@ -35,11 +35,13 @@ class User(UserBase):
 class UserCreate(UserBase):
     pass
 
+
 class UserGet(UserBase):
     id: int
 
     class Config:
         orm_mode = True
+
 
 class MessageBase(BaseModel):
     text: str
@@ -48,7 +50,7 @@ class MessageBase(BaseModel):
     is_important: bool
     is_edited: bool
     sender_id: int
-    receiver_id: int
+    dialog_id: int
 
 
 class Message(MessageBase):
@@ -58,12 +60,15 @@ class Message(MessageBase):
 class MessageCreate(MessageBase):
     pass
 
+
 class DialogBase(BaseModel):
     user1_id: int
     user2_id: int
 
+
 class Dialog(DialogBase):
     id: int
+
 
 class DialogCreate(DialogBase):
     pass
