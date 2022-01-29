@@ -1,3 +1,4 @@
+from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
 
 from store import session_factory
@@ -16,3 +17,13 @@ def add_dialog(dialog: Dialog):
         session: Session
         session.add(dialog)
         session.commit()
+
+
+def get_dialog_by_users_ids(user1_id: int, user2_id: int):
+    with session_factory() as session:
+        session: Session
+        dialog = session.query(Dialog).filter(
+            or_(and_(Dialog.user1_id == user1_id, Dialog.user2_id == user2_id),
+                and_(Dialog.user1_id == user2_id, Dialog.user2_id == user1_id))
+        ).first()
+        return dialog
