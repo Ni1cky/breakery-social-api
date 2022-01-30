@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from store.message import get_message_by_id, add_message, delete_message, update_message, messages_for_dialog
 from store.models.models import Message
-
+from store.models.schemes import MessageCreate
 
 message_router = APIRouter()
 
@@ -13,7 +13,7 @@ def get_message(message_id: int):
 
 
 @message_router.post("/messages")
-def add_new_message(req_message):
+def add_new_message(req_message: MessageCreate):
     message = Message(**req_message.dict())
     add_message(message)
 
