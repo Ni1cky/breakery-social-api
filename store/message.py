@@ -43,8 +43,9 @@ def messages_for_dialog(user1_id: int, user2_id: int):
         #     )
         # ).all()
         dialog = session.query(Dialog).filter(
-            and_(Dialog.user1_id == user1_id, Dialog.user2_id == user2_id)
-        )
+            or_(and_(Dialog.user1_id == user1_id, Dialog.user2_id == user2_id),
+                and_(Dialog.user1_id == user2_id, Dialog.user2_id == user1_id))
+        ).first()
         dialog_id = dialog.id
         messages = session.query(Message).filter_by(dialog_id=dialog_id).all()
         return messages
