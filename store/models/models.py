@@ -56,3 +56,13 @@ class Subscription(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     subscriber_id = Column(Integer, ForeignKey("users.id"))
     is_banned = Column(Boolean)
+
+
+class Photo(Base):
+    __tablename__ = "photos"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    source = Column(String)
+    is_profile_picture = Column(Boolean)
+    post_id = Column(Integer, ForeignKey("posts.id"))
