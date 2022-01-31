@@ -1,7 +1,7 @@
 from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
 from store import session_factory
-from store.models.models import Message
+from store.models.models import Message, Dialog
 
 
 def add_message(message: Message):
@@ -33,19 +33,19 @@ def update_message(message: Message):
         session.commit()
 
 
-def messages_from_to(user1_id: int, user2_id: int):
+def messages_for_dialog(user1_id: int, user2_id: int):
     with session_factory() as session:
         session: Session
-        # messages = session.query(Message).filter_by(sender_id=from_id, receiver_id=to_id).all()
         # messages = session.query(Message).filter(
-        #     (Message.sender_id == from_id and Message.receiver_id == to_id) or
-        #     (Message.sender_id == to_id and Message.receiver_id == from_id)
+        #     or_(
+        #         and_(Message.sender_id == user1_id, Message.receiver_id == user2_id),
+        #         and_(Message.sender_id == user2_id, Message.receiver_id == user1_id)
+        #     )
         # ).all()
-        messages = session.query(Message).filter(
-            or_(
-                and_(Message.sender_id == user1_id, Message.receiver_id == user2_id),
-                and_(Message.sender_id == user2_id, Message.receiver_id == user1_id)
-            )
-        ).all()
-        print(messages)
+        dialog = session.query(Dialog).filter(
+            or_(and_(Dialog.user1_id == user1_id, Dialog.user2_id == user2_id),
+                and_(Dialog.user1_id == user2_id, Dialog.user2_id == user1_id))
+        ).first()
+        dialog_id = dialog.id
+        messages = session.query(Message).filter_by(dialog_id=dialog_id).all()
         return messages
