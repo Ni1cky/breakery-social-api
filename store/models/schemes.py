@@ -73,3 +73,8 @@ class Dialog(DialogBase):
 
 class DialogCreate(DialogBase):
     pass
+
+
+
+class PhotoBase(BaseModel):
+    source: str
