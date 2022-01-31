@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from store.posts import get_post_by_id, add_post, delete_post, update_post
+from store.posts import get_post_by_id, add_post, delete_post, update_post, get_user_posts
 from store.models.models import Post
 from store.models.schemes import PostBase
 from sqlalchemy.orm import Session
@@ -38,3 +38,9 @@ def delete_the_post(posts_id: int, session: Session = Depends(get_db)):
 def change_posts_fields(posts_id: int, req_posts, session: Session = Depends(get_db)):
     posts = Post(**req_posts.dict())
     update_post(posts, session)
+
+
+@posts_router.get("/posts/{user_id}/all")
+def get_all_user_posts(user_id: int, session: Session = Depends(get_db)):
+    posts = get_user_posts(user_id, session)
+    return posts
