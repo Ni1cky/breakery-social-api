@@ -6,7 +6,7 @@ from pydantic.typing import Optional
 
 class PostBase(BaseModel):
     text: str
-    time_created: datetime.datetime
+    time_created: str
     author_id: int
 
 
