@@ -8,8 +8,14 @@ def add_post(post: Post, session: Session):
     session.commit()
 
 
-def get_posts(session: Session):
-    posts = session.query(Post).all()
+def get_max_post_id(session: Session):
+    post = session.query(Post).order_by(Post.id.desc()).first()
+    return post.id
+
+
+def get_posts(min_id: int, max_id: int, session: Session):
+    # posts = session.query(Post).all()
+    posts = session.query(Post).where(min_id < Post.id, Post.id <= max_id).all()
     return posts
 
 
