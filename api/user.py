@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from store.models.models import User
 from store.models.schemes import UserBase
-from store.user import get_user_by_id, add_user, delete_user, get_users, update_user
+from store.user import get_user_by_id, add_user, delete_user, get_users, update_user, get_block_all_users
 
 user_router = APIRouter()
 
@@ -33,3 +33,9 @@ def change_users_fields(user_id: int, req_user: UserBase):
 def get_user(user_id: int):
     user = get_user_by_id(user_id)
     return user
+
+
+@user_router.get("/users_block")
+def get_block_of_all_users(min_id: int, max_id: int):
+    users = get_block_all_users(min_id, max_id)
+    return users
