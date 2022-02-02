@@ -4,7 +4,6 @@ from store.models.models import User
 from sqlalchemy.exc import NoResultFound
 
 
-
 def add_user(session, user: User):
     session.add(user)
     session.commit()
@@ -15,6 +14,7 @@ def get_user_by_id(user_id: int) -> User:
         session: Session
         user = session.query(User).filter_by(id=user_id).first()
         return user
+
 
 def get_user_by_username(session, username: str) -> User:
     try:
@@ -31,6 +31,7 @@ def delete_user(user_id):
         session.delete(user)
         session.commit()
 
+
 def get_users():
     with session_factory() as session:
         session: Session
@@ -46,3 +47,10 @@ def update_user(user_id: int, upd_user: User):
         user.surname = upd_user.surname
         user.photo = upd_user.photo
         session.commit()
+
+
+def get_block_all_users(min_id: int, max_id: int):
+    with session_factory() as session:
+        session: Session
+        users = session.query(User).where(min_id <= User.id, User.id < max_id).all()
+        return users

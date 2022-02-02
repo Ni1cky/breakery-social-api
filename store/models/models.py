@@ -36,7 +36,7 @@ class Post(Base):
 
     id = Column(Integer, primary_key=True)
     text = Column(String)
-    time_created = Column(DateTime)
+    time_created = Column(String)
     author_id = Column(Integer, ForeignKey("users.id"))
 
 
