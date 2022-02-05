@@ -9,32 +9,49 @@ def add_post(post: Post, session: Session):
 
 
 def get_max_post_id(session: Session):
-    post = session.query(Post).order_by(Post.id.desc()).first()
-    return post.id
+    try:
+        post = session.query(Post).order_by(Post.id.desc()).first()
+        return post.id
+    except:
+        return None
 
 
 def get_posts(min_id: int, max_id: int, session: Session):
-    # posts = session.query(Post).all()
-    posts = session.query(Post).where(min_id < Post.id, Post.id <= max_id).all()
-    return posts
+    try:
+        posts = session.query(Post).where(min_id < Post.id, Post.id <= max_id).all()
+        return posts
+    except:
+        return None
 
 
-def get_post_by_id(post_id: int, session: Session) -> Post:
-    post = session.query(Post).filter_by(id=post_id).first()
-    return post
+def get_post_by_id(post_id: int, session: Session):
+    try:
+        post = session.query(Post).filter_by(id=post_id).first()
+        return post
+    except:
+        return None
 
 
 def delete_post(post_id: int, session: Session):
-    post = session.query(Post).filter_by(id=post_id).first()
-    session.delete(post)
-    session.commit()
+    try:
+        post = session.query(Post).filter_by(id=post_id).first()
+        session.delete(post)
+        session.commit()
+    except:
+        return None
 
 
 def update_post(post: Post, session: Session):
-    session.add(post)
-    session.commit()
+    try:
+        session.add(post)
+        session.commit()
+    except:
+        return None
 
 
 def get_user_posts(user_id: int, session: Session):
-    posts = session.query(Post).filter_by(author_id=user_id).all()
-    return posts
+    try:
+        posts = session.query(Post).filter_by(author_id=user_id).all()
+        return posts
+    except:
+        return None

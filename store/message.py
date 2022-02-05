@@ -36,12 +36,6 @@ def update_message(message: Message):
 def messages_for_dialog(user1_id: int, user2_id: int):
     with session_factory() as session:
         session: Session
-        # messages = session.query(Message).filter(
-        #     or_(
-        #         and_(Message.sender_id == user1_id, Message.receiver_id == user2_id),
-        #         and_(Message.sender_id == user2_id, Message.receiver_id == user1_id)
-        #     )
-        # ).all()
         dialog = session.query(Dialog).filter(
             or_(and_(Dialog.user1_id == user1_id, Dialog.user2_id == user2_id),
                 and_(Dialog.user1_id == user2_id, Dialog.user2_id == user1_id))
