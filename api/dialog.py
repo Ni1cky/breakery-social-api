@@ -10,6 +10,7 @@ dialog_router = APIRouter()
 
 @dialog_router.get("/dialogs/all/{user_id}")
 def get_all_dialogs_for_user(user_id: int, user: User = Depends(current_user)):
+
     dialogs = get_users_dialogs(user_id)
     return dialogs
 
