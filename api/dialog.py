@@ -1,10 +1,15 @@
 from fastapi import APIRouter
-
-from store.dialog import get_dialog_by_id, add_dialog, get_dialog_by_users_ids
+from store.dialog import get_dialog_by_id, add_dialog, get_dialog_by_users_ids, get_users_dialogs
 from store.models.models import Dialog
 from store.models.schemes import DialogCreate
 
 dialog_router = APIRouter()
+
+
+@dialog_router.get("/dialogs/all/{user_id}")
+def get_all_dialogs_for_user(user_id: int):
+    dialogs = get_users_dialogs(user_id)
+    return dialogs
 
 
 @dialog_router.get("/dialogs/{dialog_id}")
