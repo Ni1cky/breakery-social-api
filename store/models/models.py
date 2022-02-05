@@ -1,8 +1,13 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Table
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
 Base = declarative_base()
+
+
+likes_table = Table('association', Base.metadata,
+                    Column('user_id', Integer, ForeignKey('users.id')),
+                    Column('post_id', Integer, ForeignKey('posts.id')))
 
 
 class User(Base):
@@ -15,7 +20,8 @@ class User(Base):
     surname = Column(String)
     photo = Column(String)
     additional_data = Column(String)
-    posts = relationship("Post", backref="user")
+    posts = relationship("Post", backref="author")
+    liked_posts = relationship("Post", backref="user", cascade='all,delete,save-update', secondary=likes_table)
 
 
 class Message(Base):

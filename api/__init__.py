@@ -6,6 +6,7 @@ from api.auth import auth_router
 from api.subscriptions import subscriptions_router
 from api.photo import photo_router
 from api.posts import posts_router
+from api.likes import likes_router
 
 app = FastAPI()
 app.include_router(auth_router)
@@ -15,3 +16,4 @@ app.include_router(subscriptions_router)
 app.include_router(photo_router)
 app.include_router(dialog_router)
 app.include_router(posts_router)
+app.include_router(likes_router)
