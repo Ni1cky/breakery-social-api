@@ -22,7 +22,7 @@ def set_user_profile_picture(user_id: int, img: PhotoBase, user: User = Depends(
 
 
 @photo_router.post("/photos/default")
-def set_to_user_default_picture(login: str, img: PhotoBase, user: User = Depends(current_user)):
+def set_to_user_default_picture(login: str, img: PhotoBase):
     set_default_profile_picture(login, img.source)
 
 
