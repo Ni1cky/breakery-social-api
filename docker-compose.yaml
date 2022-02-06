@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  postgresql:
+    image: 'bitnami/postgresql:latest'
+    volumes:
+      - 'postgresql_master_data:/bitnami/postgresql'
+    environment:
+      - POSTGRESQL_USERNAME=$DB_USERNAME
+      - POSTGRESQL_PASSWORD=$DB_PASSWORD
+    ports:
+      - "5433:5432"
+  pfs103_breakery_social_api:
+      container_name: 'pfs103_breakery_social_api'
+      build:
+          context: .
+          dockerfile: ./Dockerfile
+      environment:
+          DATABASE: '$DB_DSN'
+      ports:
+          - '8015:80'
+      depends_on:
+          - 'postgresql'
+
+volumes:
+  postgresql_master_data:
