@@ -1,0 +1,31 @@
+image: python:latest
+
+cache:
+    paths:
+        - ~/.cache/pip/
+
+before_script:
+    - python -V
+    - apt-get update
+    - apt-get install ssh-client
+
+stages:
+    - deploy
+
+upload_to_server:
+    stage: deploy
+    before_script:
+        - apt-get install -qq git
+        - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+        - eval $(ssh-agent -s)
+        - ssh-add <(echo "$SSH_PRIVATE_KEY")
+        - mkdir -p ~/.ssh
+        - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    script:
+        - ssh $SSH_USER@$SSH_HOST "cd pfs103_breakery_social_api && git checkout main && git pull origin main && exit"
+        - env > .env
+        - scp .env $SSH_USER@$SSH_HOST:pfs103_breakery_social_api/.env
+        - ssh $SSH_USER@$SSH_HOST "cd pfs103_breakery_social_api && docker stop pfs103_breakery_social_api && docker rm pfs103_breakery_social_api && docker-compose build && docker-compose up -d && exit"
+    only:
+        - feature/docker_image
+        - main
