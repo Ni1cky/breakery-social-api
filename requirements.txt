@@ -1,0 +1,8 @@
+SQLAlchemy==1.4.28
+alembic==1.7.5
+fastapi==0.70.1
+uvicorn==0.16.0
+pydantic==1.8.2
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
