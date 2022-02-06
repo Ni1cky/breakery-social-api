@@ -28,3 +28,4 @@ upload_to_server:
         - ssh $SSH_USER@$SSH_HOST "cd pfs103_breakery_social_api && docker stop pfs103_breakery_social_api && docker rm pfs103_breakery_social_api && docker-compose build && docker-compose up -d && exit"
     only:
         - feature/docker_image
+        - main
